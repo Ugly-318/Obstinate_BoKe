@@ -14,7 +14,7 @@
       </p>
 
       <p>
-        <a class="btn btn-lg btn-success" href="{{ route('signup') }}" role="button">现在注册</a>
+        <a class="btn btn-lg btn-success" href="{{ route('users.create') }}" role="button">现在注册</a>
       </p>
     </div>
   {{-- 测试 --}}
