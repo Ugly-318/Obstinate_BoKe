@@ -20,5 +20,10 @@ Route::get('about', 'StaticPagesController@about')->name('about');
 //注册路由
 Route::get('signup', 'UsersController@create')->name('signup');
 
-//用户相关路由
+//用户注册相关路由
 Route::resource('users', 'UsersController');
+
+//用户登录退出相关路由
+Route::get('login', 'SessionsController@create')->name('login');
+Route::post('login', 'SessionsController@store')->name('login');
+Route::get('logout', 'SessionsController@destroy')->name('logout');
