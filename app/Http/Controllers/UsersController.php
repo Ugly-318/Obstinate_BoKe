@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -40,5 +41,38 @@ class UsersController extends Controller
         session()->flash('success', '欢迎, 您将在这里开始一段新的旅程~');
 //        dd(session()->get('success'));
         return redirect()->route('users.show', $user);
+    }
+
+    public function edit(User $user)
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, User $user)
+    {
+        $this->validate($request, [
+            'name' => [
+                'required',
+                'max:50',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'password' => 'nullable|min:6'
+        ]);
+
+        $data = [];
+        $data['name'] = $request->name;
+        if ($request->password) {
+            $data['password'] = bcrypt($request->password);
+        }
+        $user->update($data);
+
+        session()->flash('success', '个人信息已更新成功!');
+
+        return redirect()->route('users.show', $user->id);
     }
 }
