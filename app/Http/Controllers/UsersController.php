@@ -78,19 +78,26 @@ class UsersController extends Controller
         return redirect()->route('users.show', $user->id);
     }
 
-    public function __construct()
-    {
-        $this->middleware('auth', [
-            'expect' => ['create', 'show', 'store']
-        ]);
-        $this->middleware('guest', [
-            'only' => ['create']
-        ]);
-    }
-
     public function index()
     {
         $users = User::paginate(6);
         return view('users.index', compact('users'));
+    }
+
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success', '成功删除用户!');
+        return back();
+    }
+    public function __construct()
+    {
+        $this->middleware('auth', [
+            'except' => ['create', 'show', 'store', 'index']
+        ]);
+        $this->middleware('guest', [
+           'only' => ['create']
+        ]);
     }
 }
