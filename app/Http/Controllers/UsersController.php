@@ -45,6 +45,7 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
@@ -55,6 +56,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $this->authorize('update', $user);
         $this->validate($request, [
             'name' => [
                 'required',
@@ -74,5 +76,15 @@ class UsersController extends Controller
         session()->flash('success', '个人信息已更新成功!');
 
         return redirect()->route('users.show', $user->id);
+    }
+
+    public function __construct()
+    {
+        $this->middleware('auth', [
+            'expect' => ['create', 'show', 'store']
+        ]);
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
     }
 }
