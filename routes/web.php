@@ -30,3 +30,9 @@ Route::delete('logout', 'SessionsController@destroy')->name('logout');
 
 // 激活账户相关路由
 Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
+
+// 忘记密码(重置)相关路由
+Route::get('password/reset', 'PasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'PasswordController@sendRequestLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'PasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'PasswordController@reset')->name('password.update');
