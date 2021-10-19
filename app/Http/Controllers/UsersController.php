@@ -98,8 +98,15 @@ class UsersController extends Controller
         $this->middleware('auth', [
             'except' => ['create', 'show', 'store', 'index', 'confirmEmail']
         ]);
+
+        // 只允许游客 访问登录页面
         $this->middleware('guest', [
            'only' => ['create']
+        ]);
+
+        // 限流 一个小时只能提交 10次
+        $this->middleware('throttle:10,60', [
+            'only' => ['store']
         ]);
     }
 

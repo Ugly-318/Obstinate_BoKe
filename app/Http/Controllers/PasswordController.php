@@ -123,4 +123,15 @@ class PasswordController extends Controller
         return redirect()->back();
     }
 
+    /**
+     *访问限流
+     */
+    public function __construct()
+    {
+        // 限流 10分钟 3次
+       $this->middleware('throttle:3,10', [
+           'only' => ['sendRequestLinkEmail']
+       ]);
+    }
+
 }

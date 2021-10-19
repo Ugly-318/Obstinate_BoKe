@@ -60,6 +60,11 @@ class SessionsController extends Controller
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+
+        // 限流 10分钟 10次
+        $this->middleware('throttle:10,10', [
+            'only' => ['store']
+        ]);
     }
 
 }
