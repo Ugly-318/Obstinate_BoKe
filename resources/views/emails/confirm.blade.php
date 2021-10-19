@@ -6,7 +6,6 @@
 </head>
 <body>
   <h1>感谢您在 Obstinate App 网站进行注册!</h1>
-
   <p>
     请点击一下链接完成注册:
     <a href="{{ route('confirm_email', $user->activation_token) }}">
