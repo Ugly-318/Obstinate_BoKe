@@ -68,8 +68,14 @@ class User extends Authenticatable
     // 动态流
     public function feed()
     {
-        return $this->statuses()
-            ->orderBy('created_at', 'desc');
+//        return $this->statuses()
+//            ->orderBy('created_at', 'desc');
+
+        $user_ids = $this->followings->pluck('id')->toArray();
+        array_push($user_ids, $this->id);
+        return Status::whereIn('user_id', $user_ids)
+                    ->with('user')
+                    ->orderBy('created_at', 'desc');
     }
 
     // 获取粉丝
@@ -106,6 +112,7 @@ class User extends Authenticatable
     public function isFollowing($user_ids)
     {
         return $this->followings->contains($user_ids);
+//        return $this->followings()->get()->contains($user_ids);
     }
 
 }
